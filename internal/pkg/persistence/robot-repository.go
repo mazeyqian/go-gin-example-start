@@ -98,13 +98,9 @@ func (r *Sites) ClearCheckResult(WebSites *[]models.WebSite) (*wxworkbot.Markdow
 	mdStr += fmt.Sprintf("<font color=\"comment\">*%s%d*</font>", "Sum: ", len(*healthySites)+len(*failSites))
 	sA := GetAlias2dataRepository()
 	data, err := sA.Get("WECOM_ROBOT_CHECK")
-	// log.Println("Robot data:", data)
 	wxworkRobotKey := ""
 	if err != nil {
 		log.Println("error:", err)
-		// Use ENV
-		// wxworkRobotKey = os.Getenv("WECOM_ROBOT_CHECK")
-		// log.Println("Robot Getenv:", wxworkRobotKey)
 		conf := config.GetConfig()
 		wxworkRobotKey = conf.Data.WeComRobotCheck
 	} else {

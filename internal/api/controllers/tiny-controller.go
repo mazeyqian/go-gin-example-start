@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,20 +13,14 @@ import (
 func RedirectTiny(c *gin.Context) {
 	s := persistence.GetTinyRepository()
 	TinyKey := c.Param("key")
-	// log.Println("GetTiny TinyKey:", TinyKey)
 	if data, err := s.QueryOriLinkByTinyKey(TinyKey); err != nil {
-		// http_err.NewError(c, http.StatusNotFound, errors.New("data not found"))
-		// log.Println("QueryOriLinkByTinyKey", err)
 		errStr := err.Error()
 		if errStr == "" {
 			errStr = "404 Link Not Found"
 		}
 		c.HTML(http.StatusNotFound, "index.tmpl", gin.H{
-			// "title": fmt.Sprintf("404%s", errStr),
-			"title": errStr, // fmt.Sprintf("404%s", errStr),
-			// "404 Link Not Found",
+			"title": errStr,
 		})
-		// log.Println("GetTiny error:", err)
 	} else {
 		c.Redirect(http.StatusFound, data)
 	}
@@ -36,10 +29,8 @@ func RedirectTiny(c *gin.Context) {
 func GetTiny(c *gin.Context) {
 	s := persistence.GetTinyRepository()
 	TinyKey := c.Query("tiny_key")
-	log.Println("GetTiny TinyKey:", TinyKey)
 	if data, err := s.QueryOriLinkByTinyKey(TinyKey); err != nil {
 		http_err.NewError(c, http.StatusNotFound, errors.New("data not found"))
-		log.Println("GetTiny error:", err)
 	} else {
 		c.JSON(http.StatusOK, gin.H{"ori_link": data})
 	}
@@ -61,8 +52,11 @@ func CreateTiny(c *gin.Context) {
 	oneTime = tiny.OneTime
 	if TinyLink, err = s.SaveOriLink(tiny.OriLink, baseUrl, oneTime); err != nil {
 		http_err.NewError(c, http.StatusBadRequest, err)
-		log.Println("GetTiny Error:", err)
 	} else {
-		c.JSON(http.StatusCreated, gin.H{"tiny_link": TinyLink})
+		c.JSON(http.StatusCreated, gin.H{
+			"tiny_link": TinyLink,
+			"data":      TinyLink,
+			"errors":    []string{},
+		})
 	}
 }

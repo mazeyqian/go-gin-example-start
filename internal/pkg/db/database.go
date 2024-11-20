@@ -49,6 +49,7 @@ func SetupDB() {
 		}
 	} else if driver == "mysql" { // MYSQL
 		db, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database+"?charset=utf8&parseTime=True&loc=Local")
+		// db, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database+"?charset=utf8&parseTime=True&loc=Asia%2FShanghai")
 		if err != nil {
 			fmt.Println("db err: ", err)
 		}

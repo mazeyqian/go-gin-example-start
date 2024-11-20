@@ -5,7 +5,8 @@ import (
 	"flag"
 	"log"
 
-	models "github.com/mazeyqian/go-gin-gee/internal/pkg/models/sites"
+	modelsS "github.com/mazeyqian/go-gin-gee/internal/pkg/models/sites"
+	modelsT "github.com/mazeyqian/go-gin-gee/internal/pkg/models/tiny"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -37,13 +38,14 @@ type DatabaseConfiguration struct {
 }
 
 type DataConfiguration struct {
-	Sites           []models.WebSite
+	Sites           []modelsS.WebSite
 	WeComRobotCheck string
 	BaseURL         string
+	SpecialLinks    []modelsT.SpecialLink
 }
 
 // SetupDB initialize configuration
-func Setup() { // configPath string, configType string) {
+func Setup() {
 	var configuration *Configuration
 
 	// Flags
@@ -52,6 +54,7 @@ func Setup() { // configPath string, configType string) {
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine)
 	// Read environment variables
+	// Development: macOS, export WECOM_ROBOT_CHECK="b2lsjd46-7146-4nv2-8767-86cb0cncjdbe"
 	viper.AutomaticEnv()
 	// Default value
 	viper.SetDefault("WECOM_ROBOT_CHECK", "")
@@ -61,8 +64,6 @@ func Setup() { // configPath string, configType string) {
 	// Config File
 	configPath := viper.GetString("config-path")
 	configType := viper.GetString("CONFIG_TYPE")
-	// log.Println("configPath:", configPath)
-	// log.Println("configType:", configType)
 	viper.SetConfigFile(configPath)
 	viper.SetConfigType(configType)
 
@@ -77,8 +78,6 @@ func Setup() { // configPath string, configType string) {
 
 	// Supply the environment variables
 	weComRobotCheck := viper.GetString("WECOM_ROBOT_CHECK")
-	log.Println("configuration.Data.WeComRobotCheck:", configuration.Data.WeComRobotCheck)
-	log.Println("weComRobotCheck:", weComRobotCheck)
 	if weComRobotCheck != "" {
 		configuration.Data.WeComRobotCheck = weComRobotCheck
 	}

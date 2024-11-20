@@ -1,22 +1,22 @@
 {
-  "database": {
-    "driver": "sqlite",
-    "dbname": "data/database",
-    "username": "user",
-    "password": "password",
-    "host": "localhost",
-    "port": "5432",
-    "max_lifetime": 7200,
-    "max_open_conns": 150,
-    "max_idle_conns": 50
+  "Database": {
+    "Driver": "sqlite",
+    "Dbname": "data/database",
+    "Username": "user",
+    "Password": "password",
+    "Host": "localhost",
+    "Port": "5432",
+    "MaxLifetime": 7200,
+    "MaxOpenConns": 150,
+    "MaxIdleConns": 50
   },
-  "server": {
-    "port": "3000",
-    "secret": "frijan27th2023",
-    "_mode": "#release | debug",
-    "mode": "debug"
+  "Server": {
+    "Port": "3000",
+    "Secret": "frijan27th2023",
+    "_Mode": "#release | debug",
+    "Mode": "debug"
   },
-  "data": {
-    "sites": []
+  "Data": {
+    "Sites": []
   }
 }
